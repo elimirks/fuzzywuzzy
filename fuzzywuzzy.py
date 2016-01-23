@@ -19,9 +19,11 @@ class NoteMatch:
             index = self.lowerText.find(query, beginning)
             if index == -1:
                 break
-            beginning = index + 1
 
-            self._addMatchRange(index, index + len(query))
+            queryLength = len(query)
+            beginning = index + queryLength
+
+            self._addMatchRange(index, index + queryLength)
 
         return len(self.matchRanges) > 0
 
@@ -41,6 +43,7 @@ def search(query):
     notes = [
         NoteMatch('There there.'),
         NoteMatch('Where?'),
+        NoteMatch('ttt'),
     ]
 
     matches = [i for i in notes if i.findMatches(query)]
