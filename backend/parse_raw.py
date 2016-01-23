@@ -6,7 +6,7 @@ debug = False
 blacklist = [(r'and the .*;',','),(r'the .*;',','),(r'\(.*\)',''),(r'synonyms and antonyms',''),(r'\[.*\]',''),(r'\[\w*\s*',''),(r'\s{2,}','')]
 
 #READ
-f = open('assets/raw_cinnamon.txt','r')
+f = open('static/raw_cinnamon.txt','r')
 lines = []
 
 for line in f:
@@ -85,6 +85,6 @@ for line in lines:
         started = False
         word_group = ""
         
-with open('assets/cinnamon.json', 'w') as outfile:
+with open('static/cinnamon.json', 'w') as outfile:
     json.dump(synonyms, outfile)
         

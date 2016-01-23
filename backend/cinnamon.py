@@ -28,7 +28,7 @@ class Synonyms():
                 indices[s] = [m.start() for m in re.finditer(s, t)]
         return indices
             
-syn = Synonyms('assets/cinnamon.json')
+syn = Synonyms('static/cinnamon.json')
 if __name__ == '__main__':
     print(syn['hover'])
 
