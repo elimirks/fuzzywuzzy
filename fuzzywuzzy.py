@@ -21,7 +21,7 @@ class NoteMatch:
                 break
             beginning = index + 1
 
-            self._addMatchRange(index, index + len(query) - 1)
+            self._addMatchRange(index, index + len(query))
 
         return len(self.matchRanges) > 0
 
