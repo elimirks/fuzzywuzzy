@@ -36,48 +36,59 @@
             request()
         })
         
+        
         $('#search-box').keypress(function(e) {
             request()
         });
         
-        $('#post_button').click(function(e){
+        $('#input-form').submit(function(e) {
             e.preventDefault()
+            post_text()
+        })
+        
+        $('#post_button').click(function(e){
+            //e.preventDefault()
             post_text()
             //$('#input-box').css('visibility','hidden')
         });
         
         function post_text() {
             text = $('#input-box').val()
-            $('#text-results').html(highlight(text,matches))
+            $('#input-box').val("")
             var request = $.ajax({
               url: "/add/",
               type: "POST",
-              data: $('#input-box').val(),
+              data: text,
               dataType: "json"
             });
             request.done(function(data) {
-                text = $('#input-box').val()
+                
             });   
         }
         
         function request() {
             setTimeout(function(){ 
                 $.get( "/search/"+$('#search-box').val()+"/", function( data ) {
-                    console.log(data)
-                  $('#text-results').html(highlight(text,JSON.parse(data)))
-                  console.log(JSON.parse(data))
+                    html = ""
+                    parsed = JSON.parse(data)['matches']
+                    //console.log(parsed)
+                    for (i in parsed) {
+                        html += highlight(parsed[i])
+                    }
+                    $('#text-results').html(html)
+                  
                 }); }, 200);
         }
         
-        function highlight(text,data) {
+        function highlight(data) {
+            //console.log('D',data)
+            text = data['text']
             break_points = []
             //record all break points
-            for (i in data['matches']) {
-                for (j in data['matches'][i]['matchRanges']) {
-                    range= data['matches'][i]['matchRanges'][j]
-                    break_points.push(parseInt(range['start']))
-                    break_points.push(parseInt(range['end']))
-                }
+            for (j in data['matchRanges']) {
+                range= data['matchRanges'][j]
+                break_points.push(parseInt(range['start']))
+                break_points.push(parseInt(range['end']))
             }
             //break text into tokens
             break_points = break_points.sort(function(a, b) { return a - b;})
@@ -93,8 +104,7 @@
                     highlighted += '</span>' + text.substring(break_points[i],break_points[i+1])
                 }
             }
-            console.log(highlighted)
-            return highlighted
+            return highlighted + "<br>"
         }
 
 		var	$window = $(window),
