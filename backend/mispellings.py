@@ -24,7 +24,8 @@ _key_maps = {
              'w': '23esaq',
              'x': 'zsdc ',
              'y': '67uhgt',
-             'z': 'asx'
+             'z': 'asx',
+             ' ': 'cvbnm'
 }
 
 def first_pass(word):
@@ -39,7 +40,7 @@ def first_pass(word):
     return lst
 
 def second_pass(word):
-    words = open("static/words.txt").read().split()
+    words = open("words.txt").read().split()
     lst = []
     for i in range(len(word)):
         for e in _key_maps[word.lower()[i]]:
