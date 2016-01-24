@@ -1,5 +1,5 @@
-import json
-from flask import Flask, request, url_for
+import json, sqlite3
+from flask import Flask, request, url_for, g
 
 import backend.search
 
@@ -21,15 +21,23 @@ class NoteMatch:
         self.matchRanges.append((start, end))
 
     def findMatches(self, query):
-        '''
-        print(query)
-        print(self.text)
-        print(backend.search.search(query, self.text))
-        '''
         for matchWord, index in backend.search.search(query, self.text):
             self._addMatchRange(index, index + len(matchWord))
 
         return len(self.matchRanges) > 0
+
+def connect_db():
+    return sqlite3.connect(app.config['DATABASE'])
+
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+@app.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
 
 def noteMatchesToJson(matches):
     return [{
@@ -42,13 +50,13 @@ def noteMatchesToJson(matches):
         ],
     } for i in matches ]
 
+def getAllNotes():
+    result = g.db.execute('select text from notes')
+    return [NoteMatch(row[0]) for row in result.fetchall()]
+
 @app.route('/search/<string:query>/', methods=['GET'])
 def search(query):
-    notes = [
-        NoteMatch('There there.'),
-        NoteMatch('Where?'),
-        NoteMatch('ttt'),
-    ]
+    notes = getAllNotes()
 
     matches = [i for i in notes if i.findMatches(query)]
     return json.dumps({'matches': noteMatchesToJson(matches)})
