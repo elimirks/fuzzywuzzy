@@ -8,7 +8,7 @@ DATABASE = 'static/fuzzywuzzy.db'
 DEBUG = True
 
 # create eur little application :)
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.config.from_object(__name__)
 
 class NoteMatch:
@@ -56,15 +56,18 @@ def getAllNotes():
 
 @app.route('/')
 def root():
-    return '' # TODO
+    return app.send_static_file('index.html')
 
 @app.route('/add/', methods=['POST'])
 def add_entry():
+    input_text = request.get_data()
+    print("DATA", input_text)
     g.db.execute('insert into notes (text) values (?)',
-        [request.form['text']])
+        [input_text])
     g.db.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('root'))
+    #flash('New entry was successfully posted')
+    #return redirect(url_for('root'))
+    return "good"
 
 @app.route('/search/<string:query>/', methods=['GET'])
 def search(query):

@@ -40,7 +40,7 @@ def first_pass(word):
     return lst
 
 def second_pass(word):
-    words = open("words.txt").read().split()
+    words = open("static/words.txt").read().split()
     lst = []
     for i in range(len(word)):
         if word.lower()[i] >= 'a' and word.lower()[i] <= 'z' or word.lower()[i] == ' ':
