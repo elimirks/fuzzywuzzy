@@ -29,16 +29,27 @@
 	$(function() {
         
         //FUZZY
+        var waiting = false
         var matches = {"matches": []}       
         var text = "";
+        
+        setInterval(function(){
+            if (!waiting && !$('#input-box').val().equals("")) {
+                waiting = true
+                request()
+                console.log('request')
+            }
+        }, 1000)
+        
         $('#search-form').submit(function(e) {
             e.preventDefault()
-            request()
         })
         
-        
         $('#search-box').keypress(function(e) {
-            request()
+            if (!waiting) {
+                waiting = true
+                request()
+            }
         });
         
         $('#input-form').submit(function(e) {
@@ -76,6 +87,7 @@
                         html += highlight(parsed[i])
                     }
                     $('#text-results').html(html)
+                    waiting = false
                   
                 }); }, 200);
         }
