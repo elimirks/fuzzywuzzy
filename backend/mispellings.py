@@ -43,9 +43,10 @@ def second_pass(word):
     words = open("words.txt").read().split()
     lst = []
     for i in range(len(word)):
-        for e in _key_maps[word.lower()[i]]:
-            w = word.lower()[:i] + e + word.lower()[i+1:]
-            if w not in words:lst.append(w)
+        if word.lower()[i] >= 'a' and word.lower()[i] <= 'z' or word.lower()[i] == ' ':
+            for e in _key_maps[word.lower()[i]]:
+                w = word.lower()[:i] + e + word.lower()[i+1:]
+                if w not in words:lst.append(w)
     return lst
 
 if __name__ == '__main__':
