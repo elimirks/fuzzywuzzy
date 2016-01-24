@@ -63,10 +63,10 @@ def add_entry():
     input_text = request.get_data()
     print("DATA", input_text)
 
-    if not isinstance(input_text, str):
+    if len(input_text) == 0:
         return "bad"
 
-    g.db.execute('insert into notes (text) values (?)',
+    g.db.execute('insert into notes (text) values (?);',
         [input_text])
     g.db.commit()
     #flash('New entry was successfully posted')
