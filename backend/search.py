@@ -1,6 +1,6 @@
 import re
-from mispellings import *
-from cinnamon import syn
+from backend.mispellings import *
+from backend.cinnamon import syn
 
 def special_search(needle, haystack, lst):
     if needle in ["address"] + first_pass("address") + second_pass("address") + syn["address"]:
