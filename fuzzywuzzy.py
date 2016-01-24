@@ -60,12 +60,12 @@ def root():
 
 @app.route('/add/', methods=['POST'])
 def add_entry():
-    input_text = request.get_data()
+    input_text = request.get_data().decode("utf-8") 
     print("DATA", input_text)
-
     if not isinstance(input_text, str):
+        print('bad')
         return "bad"
-
+    print('made it')
     g.db.execute('insert into notes (text) values (?)',
         [input_text])
     g.db.commit()

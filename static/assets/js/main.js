@@ -63,9 +63,9 @@
         function request() {
             setTimeout(function(){ 
                 $.get( "/search/"+$('#search-box').val()+"/", function( data ) {
+                    console.log(data)
                   $('#text-results').html(highlight(text,JSON.parse(data)))
                   console.log(JSON.parse(data))
-                  //$('#text-results').html(highlight(demo_text,demo_json))
                 }); }, 200);
         }
         
