@@ -55,7 +55,6 @@
             });
             request.done(function(data) {
                 text = $('#input-box').val()
-                console.log(data)
             });   
         }
         
