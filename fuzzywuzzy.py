@@ -62,6 +62,10 @@ def root():
 def add_entry():
     input_text = request.get_data()
     print("DATA", input_text)
+
+    if not isinstance(input_text, str):
+        return "bad"
+
     g.db.execute('insert into notes (text) values (?)',
         [input_text])
     g.db.commit()
