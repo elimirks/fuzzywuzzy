@@ -36,12 +36,14 @@
             request()
         })
         
-        $('#search-box').keypress(function(event) {
+        $('#search-box').keypress(function(e) {
             request()
         });
         
-        $('#post_button').click(function(){
+        $('#post_button').click(function(e){
+            e.preventDefault()
             post_text()
+            //$('#input-box').css('visibility','hidden')
         });
         
         function post_text() {
@@ -62,6 +64,7 @@
             setTimeout(function(){ 
                 $.get( "/search/"+$('#search-box').val()+"/", function( data ) {
                   $('#text-results').html(highlight(text,JSON.parse(data)))
+                  console.log(JSON.parse(data))
                   //$('#text-results').html(highlight(demo_text,demo_json))
                 }); }, 200);
         }
