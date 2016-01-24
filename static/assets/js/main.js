@@ -29,8 +29,8 @@
 	$(function() {
         
         //FUZZY
-        var demo_json = {"matches": [{"matchRanges": [{"end": 9, "start": 8}, {"end": 11, "start": 10}], "text": "There there."}, {"matchRanges": [{"end": 3, "start": 0}, ], "text": "Where?"}]}       
-        var demo_text = "send: lol received:Im allerth. Would I know, I hope doing anyone ether? received Hey Kare I'll pretensive you whites anytime another between unside lote played too.. u agree shhome, vistical scene?received Oh my k at it out more much for each message weekend! Indeed.. Did you have been comi to make them and rent went an onto your little guron tomorrow?send: vvfxs wreceived:Tomorrow and I couldn't get but lot and take most soul much work by contracted for the other is fail send: ^R received:received It love the exactly madeThanks for twerning bonesSo would craffed doveles"
+        var matches = {"matches": []}       
+        var text = "";
         $('#search-form').submit(function(e) {
             e.preventDefault()
             request()
@@ -45,7 +45,8 @@
         });
         
         function post_text() {
-            console.log($('#input-box').val())
+            text = $('#input-box').val()
+            $('#text-results').html(highlight(text,matches))
             var request = $.ajax({
               url: "/add/",
               type: "POST",
@@ -53,15 +54,15 @@
               dataType: "json"
             });
             request.done(function(data) {
-              console.log(data)
+                text = $('#input-box').val()
+                console.log(data)
             });   
         }
         
         function request() {
             setTimeout(function(){ 
                 $.get( "/search/"+$('#search-box').val()+"/", function( data ) {
-                    console.log(JSON.parse(data))
-                  $('#text-results').html(highlight(demo_text,JSON.parse(data)))
+                  $('#text-results').html(highlight(text,JSON.parse(data)))
                   //$('#text-results').html(highlight(demo_text,demo_json))
                 }); }, 200);
         }
