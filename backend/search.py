@@ -1,6 +1,6 @@
 import re
-from mispellings import *
-from cinnamon import syn
+from backend.mispellings import *
+from backend.cinnamon import syn
 
 def special_search(needle, haystack, lst):
     similarNeedles = ["address"] + syn["address"]
