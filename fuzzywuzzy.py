@@ -65,7 +65,6 @@ def add_entry():
     if not isinstance(input_text, str):
         print('bad')
         return "bad"
-    print('made it')
     g.db.execute('insert into notes (text) values (?)',
         [input_text])
     g.db.commit()
