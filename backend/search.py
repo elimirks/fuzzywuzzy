@@ -5,13 +5,12 @@ from backend.cinnamon import syn
 def special_search(needle, haystack, lst):
     similarNeedles = ["address"] + first_pass("address") + second_pass("address") + syn["address"]
     if needle in similarNeedles:
-        lst += [(haystack[x.start() -1:x.end()-1], x.start()) for x in re.finditer('(?<=\W)[1-9]+ [a-zA-Z-]+ \W*(?i)(blvd\.|st\.|rd\.|cr\.|ln\.)(?i)\W*(?=\W|$)', " "+haystack.lower())]
+        lst += [(haystack[x.start()-1:x.end()-1], x.start()-1) for x in re.finditer('(?<=\W)[1-9]+ [a-zA-Z-]+ \W*(?i)(blvd\.|st\.|rd\.|cr\.|ln\.)(?i)\W*(?=\W|$)', " "+haystack.lower())]
 
 def direct_search(needle, haystack):
     regex = "(?<=\W)" + re.escape(needle) + "(?=\W|$)"
-    regexMatches = re.finditer(regex, haystack.lower())
-    lst = [(haystack[x.start()-1:x.end()-1], x.start()) for x in regexMatches]
-    #print(needle + " ||| "  + str(lst))
+    regexMatches = re.finditer(regex, " "+haystack.lower())
+    lst = [(haystack[x.start()-1:x.end()-1], x.start()-1) for x in regexMatches]
     special_search(needle, haystack, lst)
     return lst
 
@@ -28,4 +27,4 @@ def search(needle, haystack):
     return lst
 
 if __name__ == '__main__':
-    print(search("hello", "Hello my naem is Michael!"))
+    print(search("name", "Hello my naem is Michael!"))
