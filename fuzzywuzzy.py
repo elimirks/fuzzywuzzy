@@ -54,6 +54,18 @@ def getAllNotes():
     result = g.db.execute('select text from notes')
     return [NoteMatch(row[0]) for row in result.fetchall()]
 
+@app.route('/')
+def root():
+    return '' # TODO
+
+@app.route('/add/', methods=['POST'])
+def add_entry():
+    g.db.execute('insert into notes (text) values (?)',
+        [request.form['text']])
+    g.db.commit()
+    flash('New entry was successfully posted')
+    return redirect(url_for('root'))
+
 @app.route('/search/<string:query>/', methods=['GET'])
 def search(query):
     notes = getAllNotes()
