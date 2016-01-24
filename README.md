@@ -6,8 +6,7 @@ Install
 -------
 ```
 pip install Flask
-pip install Flask-API
-./initDb.sh
+scripts/initDb.sh
 ```
 
 Running

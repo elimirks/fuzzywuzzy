@@ -1,7 +1,15 @@
-from flask import request, url_for
-from flask.ext.api import FlaskAPI, status, exceptions
+import json
+from flask import Flask, request, url_for
 
-app = FlaskAPI(__name__)
+import backend.search
+
+# configuration
+DATABASE = 'static/fuzzywuzzy.db'
+DEBUG = True
+
+# create eur little application :)
+app = Flask(__name__)
+app.config.from_object(__name__)
 
 class NoteMatch:
     def __init__(self, text):
@@ -13,17 +21,13 @@ class NoteMatch:
         self.matchRanges.append((start, end))
 
     def findMatches(self, query):
-        beginning = 0
-
-        while True:
-            index = self.lowerText.find(query, beginning)
-            if index == -1:
-                break
-
-            queryLength = len(query)
-            beginning = index + queryLength
-
-            self._addMatchRange(index, index + queryLength)
+        '''
+        print(query)
+        print(self.text)
+        print(backend.search.search(query, self.text))
+        '''
+        for matchWord, index in backend.search.search(query, self.text):
+            self._addMatchRange(index, index + len(matchWord))
 
         return len(self.matchRanges) > 0
 
@@ -47,7 +51,7 @@ def search(query):
     ]
 
     matches = [i for i in notes if i.findMatches(query)]
-    return {'matches': noteMatchesToJson(matches)}
+    return json.dumps({'matches': noteMatchesToJson(matches)})
 
 if __name__ == "__main__":
     app.run(debug=True)

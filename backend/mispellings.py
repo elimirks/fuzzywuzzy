@@ -39,7 +39,7 @@ def first_pass(word):
     return lst
 
 def second_pass(word):
-    words = open("words.txt").read().split()
+    words = open("static/words.txt").read().split()
     lst = []
     for i in range(len(word)):
         for e in _key_maps[word.lower()[i]]:
